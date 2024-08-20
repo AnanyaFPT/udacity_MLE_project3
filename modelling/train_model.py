@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from os.path import join as safepath
 from ml.data import process_data
 import pandas as pd
-import ml.model as modelling
+import ml.model as model_utils
 
 # define constants
 INPUT_PATH = safepath('data', 'clean_census.csv')
@@ -40,17 +40,26 @@ X_test, y_test, _, _ = process_data(
 )
 
 # Train model
-model = modelling.train_model(X_train, y_train)
+model = model_utils.train_model(X_train, y_train)
 
 # Make predictions
-preds = modelling.inference(model, X_test)
+preds = model_utils.inference(model, X_test)
+
+# Get overall performance and print results
+precision, recall, fbeta = model_utils.compute_model_metrics(y_test, preds)
+print('precision', precision)
+print('recall', recall)
+print('fbeta', fbeta)
 
 # Get performance by slice
-performance_by_education = modelling.sliced_performance(
+performance_by_education = model_utils.sliced_performance(
     test, y_test, preds, 'education')
 
 # save model slice performance to file
-performance_by_education.to_csv(safepath(MODEL_OUTPUT_PATH, 'slice_output.txt'))
+performance_by_education.to_csv(
+    safepath(
+        MODEL_OUTPUT_PATH,
+        'slice_output.txt'))
 
 # save model and associated encoders to file
-modelling.save_model(MODEL_OUTPUT_PATH, model, encoder, lb)
+model_utils.save_model(MODEL_OUTPUT_PATH, model, encoder, lb)
