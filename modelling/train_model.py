@@ -3,9 +3,9 @@
 # Add the necessary imports for the starter code.
 from sklearn.model_selection import train_test_split
 from os.path import join as safepath
-from ml.data import process_data
+from modelling.ml.data import process_data, cat_features
 import pandas as pd
-import ml.model as model_utils
+import modelling.ml.model as model_utils
 
 # define constants
 INPUT_PATH = safepath('data', 'clean_census.csv')
@@ -17,17 +17,6 @@ data = pd.read_csv(INPUT_PATH)
 # Optional enhancement, use K-fold cross validation instead of a
 # train-test split.
 train, test = train_test_split(data, test_size=0.20)
-
-cat_features = [
-    "workclass",
-    "education",
-    "marital-status",
-    "occupation",
-    "relationship",
-    "race",
-    "sex",
-    "native-country",
-]
 
 # Process the train data with the process_data function.
 X_train, y_train, encoder, lb = process_data(

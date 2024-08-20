@@ -117,4 +117,4 @@ def load_model(input_path):
     for name in filenames:
         with open(safepath(input_path, name), 'rb') as f:
             loaded.append(pickle_load(f))
-    return loaded
+    return loaded[0], loaded[1], loaded[2]
